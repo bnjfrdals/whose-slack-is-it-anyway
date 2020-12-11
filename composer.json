@@ -1,0 +1,11 @@
+{
+    "name": "bnjfrd/whose-slack-is-it-anyway",
+    "description": "Script that posts \"Whose Line is it Anyway\" lines to a Slack workflow",
+    "authors": [
+        {
+            "name": "Benjamin Fraud",
+            "email": "bnjfrd@protonmail.com"
+        }
+    ],
+    "require": {}
+}
