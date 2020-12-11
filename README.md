@@ -10,10 +10,11 @@ See the official [YouTube channel](https://www.youtube.com/channel/UCKg_ZFByYTIN
 ## Usage
 
 This command randomly selects a line among a collection of lines from the **"Scenes from a Hat"** mini-game, where participants are required to improvise a funny scene inspired by the selected line, and posts it to a Slack web hook.
+Alternatively, you can also send a line of your choice by passing it a command argument.
 
 You will need to set up a Slack workflow containing a "line" variable for this to work, see [this page](https://slack.com/help/articles/360041352714-Create-more-advanced-workflows-using-webhooks) to learn how to do so.
 Then you will need to configure the command to post to the right workflow:
 * Copy the config.yaml.dist file to a new config.yaml file;
 * Configure the Slack web hook to use under the *slack_url* parameter. 
 
-Run the command with `php bin/console post-line`.
+Run the command with `php bin/console post-line [LINE]`. Leave the *LINE* argument empty to send a random line.

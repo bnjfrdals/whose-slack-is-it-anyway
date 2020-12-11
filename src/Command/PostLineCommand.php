@@ -3,6 +3,7 @@
 namespace WSIIA\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
@@ -18,7 +19,9 @@ class PostLineCommand extends Command
     {
         $this
             ->setName('post-line')
-            ->setDescription('Posts a Whose Line is it Anyway line to a Slack workflow.');
+            ->setDescription('Posts a Whose Line is it Anyway line to a Slack workflow.')
+            ->addArgument('line', InputArgument::OPTIONAL, 'The line to post. If empty, the command will randomly take one line from the collection of lines in lines.yaml')
+        ;
     }
 
     /**
@@ -29,13 +32,16 @@ class PostLineCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $line = $input->getArgument('line');
+        $line = !is_null($line) ? $line : $this->getLine();
+
         $client = HttpClient::create();
         $client->request('POST', $this->getSlackURL(), [
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
             'json' => [
-                'line' => $this->getLine(),
+                'line' => $line,
             ],
         ]);
 
