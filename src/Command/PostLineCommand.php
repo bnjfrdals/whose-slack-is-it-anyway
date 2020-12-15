@@ -12,6 +12,22 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PostLineCommand extends Command
 {
+    /** @var string */
+    private $slackURL;
+
+    /**
+     * PostLineCommand constructor.
+     *
+     * @param string $slackURL
+     */
+    public function __construct(string $slackURL)
+    {
+        parent::__construct();
+
+        $this->slackURL = $slackURL;
+    }
+
+
     /**
      * {@inheritdoc}
      */
@@ -36,7 +52,7 @@ class PostLineCommand extends Command
         $line = !is_null($line) ? $line : $this->getLine();
 
         $client = HttpClient::create();
-        $client->request('POST', $this->getSlackURL(), [
+        $client->request('POST', $this->slackURL, [
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
@@ -57,21 +73,5 @@ class PostLineCommand extends Command
         $lines = Yaml::parseFile($path)['lines'];
 
         return $lines[rand(0, count($lines) - 1)];
-    }
-
-    /**
-     * @return string
-     * @throws \RuntimeException
-     */
-    private function getSlackURL(): string
-    {
-        $path = __DIR__ . '/../../config.yaml';
-        if (!file_exists($path)) {
-            throw new \RuntimeException('Configuration file was not found. Please copy the config.yaml.dist file to a new config.yaml file.');
-        }
-
-        $config = Yaml::parseFile($path);
-
-        return $config['slack_url'];
     }
 }

@@ -14,8 +14,6 @@ Lines are stored in the lines.yaml file, which you can update with your own line
 Alternatively, you can also send a line of your choice by passing it as a command argument.
 
 You will need to set up a Slack workflow containing a "line" variable for this to work, see [this page](https://slack.com/help/articles/360041352714-Create-more-advanced-workflows-using-webhooks) to learn how to do so.
-Then you will need to configure the command to post to the right workflow:
-* Copy the config.yaml.dist file to a new config.yaml file;
-* Configure the Slack web hook to use under the *slack_url* parameter. 
+Then you will need to set the `SLACK_URL` environment variable to post to the right workflow.
 
-Run the command with `php bin/console post-line [LINE]`. Leave the *LINE* argument empty to send a random line.
+Run the command with `bin/console post-line [LINE]`. Leave the *LINE* argument empty to send a random line.
