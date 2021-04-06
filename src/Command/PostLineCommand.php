@@ -41,8 +41,9 @@ class PostLineCommand extends Command
         $this
             ->setName('post-line')
             ->setDescription('Posts a Whose Line is it Anyway line to a Slack workflow.')
-            ->addArgument('line', InputArgument::OPTIONAL, 'The line to post. If empty, the command will take one line from the collection of lines in lines.yaml depending on the requested strategy')
-            ->addOption('strategy', null, InputOption::VALUE_REQUIRED, 'The strategy to select the line (random, modulo)')
+            ->addArgument('line', InputArgument::OPTIONAL, 'The line to post. If empty, the command will take one line from the collection of lines in lines.yaml depending on the requested strategy.')
+            ->addOption('strategy', null, InputOption::VALUE_REQUIRED, 'The strategy to select the line (random, modulo).')
+            ->addOption('weekdays', null, InputOption::VALUE_NONE, 'Post lines on week days only.')
         ;
     }
 
@@ -54,6 +55,12 @@ class PostLineCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if ($input->getOption('weekdays') && in_array(date('w'), [0, 6])) {
+            $output->writeln('Skipping line during week-ends');
+
+            return 1;
+        }
+
         if (!is_null($input->getOption('strategy')) && !is_null($input->getArgument('line'))) {
             throw new Exception("Strategy option cannot be used with a custom line");
         }
